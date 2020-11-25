@@ -26,25 +26,25 @@ namespace Joscoin
             var startTime = DateTime.Now;
 
             Blockchain joscoin = new Blockchain();
-            joscoin.CreateTransaction(new Transaction("Henry", "MaHesh", 10));
-            joscoin.ProcessPendingTransactions("Bill");
+            joscoin.CreateTransaction(new Transaction("Ryan", "Nick", 10));
+            joscoin.ProcessPendingTransactions("Matt");
             Console.WriteLine(JsonConvert.SerializeObject(joscoin, Formatting.Indented));
 
-            joscoin.CreateTransaction(new Transaction("MaHesh", "Henry", 5));
-            joscoin.CreateTransaction(new Transaction("MaHesh", "Henry", 5));
-            joscoin.ProcessPendingTransactions("Bill");
+            joscoin.CreateTransaction(new Transaction("Nick", "Ryan", 5));
+            joscoin.CreateTransaction(new Transaction("Nick", "Ryan", 5));
+            joscoin.ProcessPendingTransactions("Matt");
 
             var endTime = DateTime.Now;
 
             Console.WriteLine($"Duration: {endTime - startTime}");
 
             Console.WriteLine("=========================");
-            Console.WriteLine($"Henry' balance: {joscoin.GetBalance("Henry")}");
-            Console.WriteLine($"MaHesh' balance: {joscoin.GetBalance("MaHesh")}");
-            Console.WriteLine($"Bill' balance: {joscoin.GetBalance("Bill")}");
+            Console.WriteLine($"Ryan' balance: {joscoin.GetBalance("Ryan")}");
+            Console.WriteLine($"Nick' balance: {joscoin.GetBalance("Nick")}");
+            Console.WriteLine($"Matt' balance: {joscoin.GetBalance("Matt")}");
 
             Console.WriteLine("=========================");
-            Console.WriteLine($"phillyCoin");
+            Console.WriteLine($"joscoin");
             Console.WriteLine(JsonConvert.SerializeObject(joscoin, Formatting.Indented));
 
             Console.ReadKey();
