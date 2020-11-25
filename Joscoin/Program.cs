@@ -1,6 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Formatting = System.Xml.Formatting;
 
 namespace Joscoin
 {
@@ -8,47 +7,47 @@ namespace Joscoin
     {
         static void Main(string[] args)
         {
-//            Console.WriteLine(@"
-//    _____                                          __                   ______                                   __               
-//   |     \                                        |  \                 /      \                                 |  \              
-//    \$$$$$  ______    _______   _______   ______   \$$ _______        |  $$$$$$\  ______   __    __   ______   _| $$_     ______  
-//      | $$ /      \  /       \ /       \ /      \ |  \|       \       | $$   \$$ /      \ |  \  |  \ /      \ |   $$ \   /      \ 
-// __   | $$|  $$$$$$\|  $$$$$$$|  $$$$$$$|  $$$$$$\| $$| $$$$$$$\      | $$      |  $$$$$$\| $$  | $$|  $$$$$$\ \$$$$$$  |  $$$$$$\
-//|  \  | $$| $$  | $$ \$$    \ | $$      | $$  | $$| $$| $$  | $$      | $$   __ | $$   \$$| $$  | $$| $$  | $$  | $$ __ | $$  | $$
-//| $$__| $$| $$__/ $$ _\$$$$$$\| $$_____ | $$__/ $$| $$| $$  | $$      | $$__/  \| $$      | $$__/ $$| $$__/ $$  | $$|  \| $$__/ $$
-// \$$    $$ \$$    $$|       $$ \$$     \ \$$    $$| $$| $$  | $$       \$$    $$| $$       \$$    $$| $$    $$   \$$  $$ \$$    $$
-//  \$$$$$$   \$$$$$$  \$$$$$$$   \$$$$$$$  \$$$$$$  \$$ \$$   \$$        \$$$$$$  \$$       _\$$$$$$$| $$$$$$$     \$$$$   \$$$$$$ 
-//                                                                                          |  \__| $$| $$                          
-//                                                                                           \$$    $$| $$                          
-//                                                                                            \$$$$$$  \$$                          
-//");
+            //            Console.WriteLine(@"
+            //    _____                                          __                   ______                                   __               
+            //   |     \                                        |  \                 /      \                                 |  \              
+            //    \$$$$$  ______    _______   _______   ______   \$$ _______        |  $$$$$$\  ______   __    __   ______   _| $$_     ______  
+            //      | $$ /      \  /       \ /       \ /      \ |  \|       \       | $$   \$$ /      \ |  \  |  \ /      \ |   $$ \   /      \ 
+            // __   | $$|  $$$$$$\|  $$$$$$$|  $$$$$$$|  $$$$$$\| $$| $$$$$$$\      | $$      |  $$$$$$\| $$  | $$|  $$$$$$\ \$$$$$$  |  $$$$$$\
+            //|  \  | $$| $$  | $$ \$$    \ | $$      | $$  | $$| $$| $$  | $$      | $$   __ | $$   \$$| $$  | $$| $$  | $$  | $$ __ | $$  | $$
+            //| $$__| $$| $$__/ $$ _\$$$$$$\| $$_____ | $$__/ $$| $$| $$  | $$      | $$__/  \| $$      | $$__/ $$| $$__/ $$  | $$|  \| $$__/ $$
+            // \$$    $$ \$$    $$|       $$ \$$     \ \$$    $$| $$| $$  | $$       \$$    $$| $$       \$$    $$| $$    $$   \$$  $$ \$$    $$
+            //  \$$$$$$   \$$$$$$  \$$$$$$$   \$$$$$$$  \$$$$$$  \$$ \$$   \$$        \$$$$$$  \$$       _\$$$$$$$| $$$$$$$     \$$$$   \$$$$$$ 
+            //                                                                                          |  \__| $$| $$                          
+            //                                                                                           \$$    $$| $$                          
+            //                                                                                            \$$$$$$  \$$                          
+            //");
 
 
             var startTime = DateTime.Now;
 
             Blockchain joscoin = new Blockchain();
-            joscoin.AddBlock(new Block(DateTime.Now, null, "{sender:Henry,receiver:MaHesh,amount:10}"));
-            joscoin.AddBlock(new Block(DateTime.Now, null, "{sender:MaHesh,receiver:Henry,amount:5}"));
-            joscoin.AddBlock(new Block(DateTime.Now, null, "{sender:Mahesh,receiver:Henry,amount:5}"));
+            joscoin.CreateTransaction(new Transaction("Henry", "MaHesh", 10));
+            joscoin.ProcessPendingTransactions("Bill");
+            Console.WriteLine(JsonConvert.SerializeObject(joscoin, Formatting.Indented));
+
+            joscoin.CreateTransaction(new Transaction("MaHesh", "Henry", 5));
+            joscoin.CreateTransaction(new Transaction("MaHesh", "Henry", 5));
+            joscoin.ProcessPendingTransactions("Bill");
 
             var endTime = DateTime.Now;
 
             Console.WriteLine($"Duration: {endTime - startTime}");
 
+            Console.WriteLine("=========================");
+            Console.WriteLine($"Henry' balance: {joscoin.GetBalance("Henry")}");
+            Console.WriteLine($"MaHesh' balance: {joscoin.GetBalance("MaHesh")}");
+            Console.WriteLine($"Bill' balance: {joscoin.GetBalance("Bill")}");
 
-            var json = JsonConvert.SerializeObject(joscoin, Newtonsoft.Json.Formatting.Indented);
-            Console.WriteLine(json);
+            Console.WriteLine("=========================");
+            Console.WriteLine($"phillyCoin");
+            Console.WriteLine(JsonConvert.SerializeObject(joscoin, Formatting.Indented));
 
-
-            Console.WriteLine($"Is Chain Valid: {joscoin.IsValid()}");
-
-            Console.WriteLine($"Update amount to 1000");
-            joscoin.Chain[1].Data = "{sender:Henry,receiver:MaHesh,amount:1000}";
-
-            Console.WriteLine($"Is Chain Valid: {joscoin.IsValid()}");
-
-           
-
+            Console.ReadKey();
 
             Console.ReadLine();
         }
